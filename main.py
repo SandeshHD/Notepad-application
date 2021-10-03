@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import filedialog, colorchooser, messagebox, simpledialog
 import wikipedia
 import tkinter.font
 
