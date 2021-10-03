@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 import wikipedia
+import tkinter.font
 from tkinter import colorchooser
 from tkinter import messagebox
 from tkinter import simpledialog
@@ -12,7 +13,7 @@ root = Tk()
 root.title("Notepad")
 
 
-def srch():
+def search(*args):
     s = simpledialog.askstring('Search', 'Enter your search')
     root.title("Notepad - " + str(s))
     txt.delete(1.0, END)
@@ -22,7 +23,7 @@ def srch():
         k = wikipedia.summary(s)
         txt.insert(INSERT, k)
     except:
-        txt.insert(INSERT, 'Check your internet connection or Enter proper word')
+        messagebox.showerror("Error","Check your internet connection or Enter proper word")
 
 
 def new(*args):
@@ -34,7 +35,7 @@ def new(*args):
 def strt(*args):
     txt.delete(1.0, END)
     res = filedialog.askopenfile(initialdir='/', title='select',
-                                 filetypes=(('text files', '.txt'), ('all files', '*.*')))
+                                 filetypes=(('text files', '.txt'), ('all files', '.')))
     root.title("Notepad - " + str(res.name))
     if res is None:
         return
@@ -51,7 +52,7 @@ def exit():
 
 def saveas():
     sv = filedialog.asksaveasfile(mode='w', defaultextension='.txt', initialdir='/',
-                                  filetypes=(('text files', '.txt'), ('all files', '*.*')))
+                                  filetypes=(('text files', '.txt'), ('all files', '.')))
     root.title("Notepad - " + str(sv.name))
     if sv is None:
         return
@@ -70,12 +71,12 @@ def save(*args):
         f.close()
 
 
-def changebg():
+def changeBg(*args):
     clr = colorchooser.askcolor(title='select color')
     txt.config(bg=clr[1])
 
 
-def changefnt():
+def changeFont(*args):
     clr = colorchooser.askcolor(title='select color')
     txt.config(fg=clr[1])
 
@@ -99,6 +100,12 @@ def cut(event=''):
     except:
         pass
 
+def changeFntFam(font,txt):
+    Desired_font = tkinter.font.Font(family=font)
+    print(font)
+    print("txt===",txt)
+    txt.config(font=Desired_font)
+
 
 def changeFntFam(font,txt):
     Desired_font = tkinter.font.Font(family=font)
@@ -109,6 +116,7 @@ def changeFntFam(font,txt):
 
 mainm = Menu(root)
 root.config(menu=mainm)
+
 file = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='File', menu=file)
 file.add_command(label="New", command=new)
@@ -121,13 +129,11 @@ mainm.add_cascade(label='Edit', menu=edit_menu)
 edit_menu.add_command(label="Copy", command=cpy)
 edit_menu.add_command(label="Cut", command=cut)
 edit_menu.add_command(label="Paste", command=paste)
-mainm.add_command(label='Search', command=srch)
-
 
 tframe = Frame(root)
 scroll = Scrollbar(tframe)
 scroll.pack(fill=Y, side=RIGHT)
-txt = Text(tframe, yscrollcommand=scroll, padx=2, pady=2, wrap=WORD, undo=True)
+txt = Text(tframe,yscrollcommand=scroll, padx=2, pady=2, wrap=WORD, undo=True)
 edit_menu.add_command(label="Undo", command=txt.edit_undo)
 edit_menu.add_command(label="Redo", command=txt.edit_redo)
 
@@ -150,16 +156,26 @@ fontFam.add_command(label="Terminal", command=lambda: changeFntFam("Terminal", t
 fontFam.add_command(label="Times New Roman", command=lambda: changeFntFam("Times New Roman", txt))
 
 scroll.config(command=txt.yview)
-txt.pack(fill=BOTH, expand=1)
+txt.pack(fill=BOTH, expand=True)
 tframe.pack()
 format_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Format', menu=format_menu)
-format_menu.add_command(label='Change Background', command=changebg)
-format_menu.add_command(label='Change Font', command=changefnt)
+format_menu.add_command(label='Change Background', command=changeBg)
+format_menu.add_command(label='Change Font', command=changeFont)
 root.bind('<Control-c>', cpy)
 root.bind('<Control-v>', paste)
 root.bind('<Control-x>', cut)
 root.bind('<Control-s>', save)
 root.bind('<Control-o>', strt)
 root.bind('<Control-n>', new)
+
+#added 3 shortcuts
+root.bind('<Control-w>', search)
+root.bind('<Control-b>', changeBg)
+root.bind('<Control-f>', changeFont)
+
+#changed font family
+Desired_font = tkinter.font.Font( family = "Comic Sans MS", size = 12
+                                  )
+txt.configure(font= Desired_font)
 root.mainloop()
