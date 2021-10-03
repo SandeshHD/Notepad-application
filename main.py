@@ -1,10 +1,5 @@
 from tkinter import *
-from tkinter import filedialog
 import wikipedia
-import tkinter.font
-from tkinter import colorchooser
-from tkinter import messagebox
-from tkinter import simpledialog
 import tkinter.font
 
 
@@ -118,10 +113,10 @@ tframe.pack()
 
 scroll = Scrollbar(tframe)
 scroll.pack(fill=Y, side=RIGHT)
-scroll.config(command=txt.yview)
 
 txt = Text(tframe,yscrollcommand=scroll, padx=2, pady=2, wrap=WORD, undo=True)
 txt.pack(fill=BOTH, expand=True)
+scroll.config(command=txt.yview)
 
 mainm = Menu(root)
 root.config(menu=mainm)
