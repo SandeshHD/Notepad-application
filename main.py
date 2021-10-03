@@ -113,6 +113,15 @@ def changeFntFam(font,txt):
     print("txt===",txt)
     txt.config(font=Desired_font)
 
+tframe = Frame(root)
+tframe.pack()
+
+scroll = Scrollbar(tframe)
+scroll.pack(fill=Y, side=RIGHT)
+scroll.config(command=txt.yview)
+
+txt = Text(tframe,yscrollcommand=scroll, padx=2, pady=2, wrap=WORD, undo=True)
+txt.pack(fill=BOTH, expand=True)
 
 mainm = Menu(root)
 root.config(menu=mainm)
@@ -129,10 +138,6 @@ for item in zip(file_menu_labels, file_menu_commands):
 edit_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Edit', menu=edit_menu)
 
-tframe = Frame(root)
-scroll = Scrollbar(tframe)
-scroll.pack(fill=Y, side=RIGHT)
-txt = Text(tframe,yscrollcommand=scroll, padx=2, pady=2, wrap=WORD, undo=True)
 edit_menu_labels = ["Copy", "Cut", "Paste", "Undo", "Redo"]
 edit_menu_functions = [cpy, cut, paste, txt.edit_undo, txt.edit_redo]
 
@@ -160,13 +165,11 @@ font_labels = ["Adobe Garamond Pro",
 for font in font_labels:
     fontFam.add_command(label=font, command=lambda: changeFntFam(font, txt))
 
-scroll.config(command=txt.yview)
-txt.pack(fill=BOTH, expand=True)
-tframe.pack()
 format_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Format', menu=format_menu)
 format_menu.add_command(label='Change Background', command=changeBg)
 format_menu.add_command(label='Change Font', command=changeFont)
+
 root.bind('<Control-c>', cpy)
 root.bind('<Control-v>', paste)
 root.bind('<Control-x>', cut)
