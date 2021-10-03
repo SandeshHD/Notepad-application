@@ -4,6 +4,8 @@ import wikipedia
 from tkinter import colorchooser
 from tkinter import messagebox
 from tkinter import simpledialog
+import tkinter.font
+
 
 fileloc = ['no_file']
 root = Tk()
@@ -98,6 +100,13 @@ def cut(event=''):
         pass
 
 
+def changeFntFam(font,txt):
+    Desired_font = tkinter.font.Font(family=font)
+    print(font)
+    print("txt===",txt)
+    txt.config(font=Desired_font)
+
+
 mainm = Menu(root)
 root.config(menu=mainm)
 file = Menu(mainm, tearoff=False)
@@ -113,12 +122,33 @@ edit_menu.add_command(label="Copy", command=cpy)
 edit_menu.add_command(label="Cut", command=cut)
 edit_menu.add_command(label="Paste", command=paste)
 mainm.add_command(label='Search', command=srch)
+
+
 tframe = Frame(root)
 scroll = Scrollbar(tframe)
 scroll.pack(fill=Y, side=RIGHT)
 txt = Text(tframe, yscrollcommand=scroll, padx=2, pady=2, wrap=WORD, undo=True)
 edit_menu.add_command(label="Undo", command=txt.edit_undo)
 edit_menu.add_command(label="Redo", command=txt.edit_redo)
+
+
+fontFam = Menu(mainm, tearoff=False)
+mainm.add_cascade(label='Font Family', menu=fontFam)
+
+fontFam.add_command(label="Adobe Garamond Pro", command=lambda: changeFntFam("Adobe Garamond Pro", txt))
+fontFam.add_command(label="Comic Sans MS", command=lambda: changeFntFam("Comic Sans MS", txt))
+fontFam.add_command(label="Consolas", command=lambda: changeFntFam("Consolas", txt))
+fontFam.add_command(label="Courier", command=lambda: changeFntFam("Courier", txt))
+fontFam.add_command(label="Courier New", command=lambda: changeFntFam("Courier New", txt))
+fontFam.add_command(label="Courier New Greek", command=lambda: changeFntFam("Courier New Greek", txt))
+fontFam.add_command(label="Microsoft Himalaya", command=lambda: changeFntFam("Microsoft Himalaya", txt))
+fontFam.add_command(label="Modern", command=lambda: changeFntFam("Modern", txt))
+fontFam.add_command(label="MS Sans Serif", command=lambda: changeFntFam("MS Sans Serif", txt))
+fontFam.add_command(label="Roman", command=lambda: changeFntFam("Roman", txt))
+fontFam.add_command(label="System", command=lambda: changeFntFam("System", txt))
+fontFam.add_command(label="Terminal", command=lambda: changeFntFam("Terminal", txt))
+fontFam.add_command(label="Times New Roman", command=lambda: changeFntFam("Times New Roman", txt))
+
 scroll.config(command=txt.yview)
 txt.pack(fill=BOTH, expand=1)
 tframe.pack()
