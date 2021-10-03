@@ -34,8 +34,7 @@ def new(*args):
 
 def strt(*args):
     txt.delete(1.0, END)
-    res = filedialog.askopenfile(initialdir='/', title='select',
-                                 filetypes=(('text files', '.txt'), ('all files', '.')))
+    res = filedialog.askopenfile(initialdir='/', title='select',filetypes=(('text files', '.txt'), ('all files', '.')))
     root.title("Notepad - " + str(res.name))
     if res is None:
         return
