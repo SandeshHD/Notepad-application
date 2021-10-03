@@ -5,6 +5,8 @@ import tkinter.font
 from tkinter import colorchooser
 from tkinter import messagebox
 from tkinter import simpledialog
+import tkinter.font
+
 
 fileloc = ['no_file']
 root = Tk()
@@ -105,6 +107,13 @@ def changeFntFam(font,txt):
     txt.config(font=Desired_font)
 
 
+def changeFntFam(font,txt):
+    Desired_font = tkinter.font.Font(family=font)
+    print(font)
+    print("txt===",txt)
+    txt.config(font=Desired_font)
+
+
 mainm = Menu(root)
 root.config(menu=mainm)
 
@@ -120,7 +129,7 @@ mainm.add_cascade(label='Edit', menu=edit_menu)
 edit_menu.add_command(label="Copy", command=cpy)
 edit_menu.add_command(label="Cut", command=cut)
 edit_menu.add_command(label="Paste", command=paste)
-mainm.add_command(label='Search', command=search)
+
 tframe = Frame(root)
 scroll = Scrollbar(tframe)
 scroll.pack(fill=Y, side=RIGHT)
