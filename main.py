@@ -1,10 +1,6 @@
 from tkinter import *
-from tkinter import filedialog
+from tkinter import filedialog, colorchooser, messagebox, simpledialog
 import wikipedia
-import tkinter.font
-from tkinter import colorchooser
-from tkinter import messagebox
-from tkinter import simpledialog
 import tkinter.font
 
 
@@ -113,55 +109,63 @@ def changeFntFam(font,txt):
     print("txt===",txt)
     txt.config(font=Desired_font)
 
+tframe = Frame(root)
+tframe.pack()
+
+scroll = Scrollbar(tframe)
+scroll.pack(fill=Y, side=RIGHT)
+
+txt = Text(tframe,yscrollcommand=scroll, padx=2, pady=2, wrap=WORD, undo=True)
+txt.pack(fill=BOTH, expand=True)
+scroll.config(command=txt.yview)
 
 mainm = Menu(root)
 root.config(menu=mainm)
 
 file = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='File', menu=file)
-file.add_command(label="New", command=new)
-file.add_command(label="Open", command=strt)
-file.add_command(label="Save", command=save)
-file.add_command(label="Save as", command=saveas)
-file.add_command(label="Exit", command=exit)
+
+file_menu_labels = ["New", "Open", "Save", "Save as", "Exit"]
+file_menu_commands = [new, strt, save, saveas, exit]
+
+for item in zip(file_menu_labels, file_menu_commands):
+    file.add_command(label=item[0], command=item[1])
+
 edit_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Edit', menu=edit_menu)
-edit_menu.add_command(label="Copy", command=cpy)
-edit_menu.add_command(label="Cut", command=cut)
-edit_menu.add_command(label="Paste", command=paste)
 
-tframe = Frame(root)
-scroll = Scrollbar(tframe)
-scroll.pack(fill=Y, side=RIGHT)
-txt = Text(tframe,yscrollcommand=scroll, padx=2, pady=2, wrap=WORD, undo=True)
-edit_menu.add_command(label="Undo", command=txt.edit_undo)
-edit_menu.add_command(label="Redo", command=txt.edit_redo)
+edit_menu_labels = ["Copy", "Cut", "Paste", "Undo", "Redo"]
+edit_menu_functions = [cpy, cut, paste, txt.edit_undo, txt.edit_redo]
 
+for item in zip(edit_menu_labels, edit_menu_functions):
+    edit_menu.add_command(label=item[0], command=item[1])
 
 fontFam = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Font Family', menu=fontFam)
 
-fontFam.add_command(label="Adobe Garamond Pro", command=lambda: changeFntFam("Adobe Garamond Pro", txt))
-fontFam.add_command(label="Comic Sans MS", command=lambda: changeFntFam("Comic Sans MS", txt))
-fontFam.add_command(label="Consolas", command=lambda: changeFntFam("Consolas", txt))
-fontFam.add_command(label="Courier", command=lambda: changeFntFam("Courier", txt))
-fontFam.add_command(label="Courier New", command=lambda: changeFntFam("Courier New", txt))
-fontFam.add_command(label="Courier New Greek", command=lambda: changeFntFam("Courier New Greek", txt))
-fontFam.add_command(label="Microsoft Himalaya", command=lambda: changeFntFam("Microsoft Himalaya", txt))
-fontFam.add_command(label="Modern", command=lambda: changeFntFam("Modern", txt))
-fontFam.add_command(label="MS Sans Serif", command=lambda: changeFntFam("MS Sans Serif", txt))
-fontFam.add_command(label="Roman", command=lambda: changeFntFam("Roman", txt))
-fontFam.add_command(label="System", command=lambda: changeFntFam("System", txt))
-fontFam.add_command(label="Terminal", command=lambda: changeFntFam("Terminal", txt))
-fontFam.add_command(label="Times New Roman", command=lambda: changeFntFam("Times New Roman", txt))
+font_labels = ["Adobe Garamond Pro",
+               "Comic Sans MS",
+               "Consolas",
+               "Courier",
+               "Courier New",
+               "Courier New Greek",
+               "Microsoft Himalaya",
+               "Modern",
+               "MS Sans Serif",
+               "Roman",
+               "System",
+               "Terminal",
+               "Times New Roman"
+]
 
-scroll.config(command=txt.yview)
-txt.pack(fill=BOTH, expand=True)
-tframe.pack()
+for font in font_labels:
+    fontFam.add_command(label=font, command=lambda: changeFntFam(font, txt))
+
 format_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Format', menu=format_menu)
 format_menu.add_command(label='Change Background', command=changeBg)
 format_menu.add_command(label='Change Font', command=changeFont)
+
 root.bind('<Control-c>', cpy)
 root.bind('<Control-v>', paste)
 root.bind('<Control-x>', cut)
