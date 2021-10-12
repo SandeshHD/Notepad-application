@@ -8,6 +8,8 @@ fileloc = ['no_file']
 root = Tk()
 root.title("Notepad")
 
+current_font = "Comic Sans MS"
+font_size = 12
 
 def search(*args):
     s = simpledialog.askstring('Search', 'Enter your search')
@@ -98,10 +100,16 @@ def cut(event=''):
 
 
 def changeFntFam(font):
-    Desired_font = tkinter.font.Font(family=font)
+    Desired_font = tkinter.font.Font(family=font, size=font_size)
     print(font)
     print("txt===",txt)
     txt.config(font=Desired_font)
+    current_font = font
+
+
+def changeFontSize(size):
+    txt.config(font=(current_font, size))
+
 
 tframe = Frame(root)
 tframe.pack()
@@ -155,6 +163,13 @@ font_labels = ["Adobe Garamond Pro",
 for font in font_labels:
     fontFam.add_command(label=font, command=lambda font=font: changeFntFam(font))
 
+font_size_menu = Menu(mainm, tearoff=False)
+mainm.add_cascade(label='Font Size', menu=font_size_menu)
+
+font_sizes = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72]
+for s in font_sizes:
+    font_size_menu.add_command(label=s, command=lambda size=s: changeFontSize(size))
+
 format_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Format', menu=format_menu)
 format_menu.add_command(label='Change Background', command=changeBg)
@@ -173,7 +188,7 @@ root.bind('<Control-b>', changeBg)
 root.bind('<Control-f>', changeFont)
 
 #changed font family
-Desired_font = tkinter.font.Font( family = "Comic Sans MS", size = 12
+Desired_font = tkinter.font.Font( family = current_font, size = font_size
                                   )
 txt.configure(font= Desired_font)
 root.mainloop()
