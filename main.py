@@ -69,12 +69,12 @@ def save(*args):
         f.close()
 
 
-def changeBg(*args):
+def changeBgColor(*args):
     clr = colorchooser.askcolor(title='select color')
     txt.config(bg=clr[1])
 
 
-def changeFont(*args):
+def changeFontColor(*args):
     clr = colorchooser.askcolor(title='select color')
     txt.config(fg=clr[1])
 
@@ -172,8 +172,8 @@ for s in font_sizes:
 
 format_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Format', menu=format_menu)
-format_menu.add_command(label='Change Background', command=changeBg)
-format_menu.add_command(label='Change Font', command=changeFont)
+format_menu.add_command(label='Change Background Color', command=changeBgColor)
+format_menu.add_command(label='Change Font Color', command=changeFontColor)
 
 root.bind('<Control-c>', cpy)
 root.bind('<Control-v>', paste)
@@ -184,8 +184,8 @@ root.bind('<Control-n>', new)
 
 #added 3 shortcuts
 root.bind('<Control-w>', search)
-root.bind('<Control-b>', changeBg)
-root.bind('<Control-f>', changeFont)
+root.bind('<Control-b>', changeBgColor)
+root.bind('<Control-f>', changeFontColor)
 
 #changed font family
 Desired_font = tkinter.font.Font( family = current_font, size = font_size
