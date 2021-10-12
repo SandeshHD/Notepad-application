@@ -96,14 +96,8 @@ def cut(event=''):
     except:
         pass
 
-def changeFntFam(font,txt):
-    Desired_font = tkinter.font.Font(family=font)
-    print(font)
-    print("txt===",txt)
-    txt.config(font=Desired_font)
 
-
-def changeFntFam(font,txt):
+def changeFntFam(font):
     Desired_font = tkinter.font.Font(family=font)
     print(font)
     print("txt===",txt)
@@ -159,7 +153,7 @@ font_labels = ["Adobe Garamond Pro",
 ]
 
 for font in font_labels:
-    fontFam.add_command(label=font, command=lambda: changeFntFam(font, txt))
+    fontFam.add_command(label=font, command=lambda font=font: changeFntFam(font))
 
 format_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Format', menu=format_menu)
