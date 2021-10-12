@@ -112,7 +112,7 @@ def changeFontSize(size):
 
 
 tframe = Frame(root)
-tframe.pack()
+tframe.pack(fill=BOTH, expand=True)
 
 scroll = Scrollbar(tframe)
 scroll.pack(fill=Y, side=RIGHT)
@@ -191,4 +191,5 @@ root.bind('<Control-f>', changeFont)
 Desired_font = tkinter.font.Font( family = current_font, size = font_size
                                   )
 txt.configure(font= Desired_font)
+root.geometry("800x450")
 root.mainloop()
