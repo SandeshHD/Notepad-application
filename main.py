@@ -8,6 +8,8 @@ fileloc = ['no_file']
 root = Tk()
 root.title("Notepad")
 
+current_font = "Comic Sans MS"
+font_size = 12
 
 def search(*args):
     s = simpledialog.askstring('Search', 'Enter your search')
@@ -67,12 +69,12 @@ def save(*args):
         f.close()
 
 
-def changeBg(*args):
+def changeBgColor(*args):
     clr = colorchooser.askcolor(title='select color')
     txt.config(bg=clr[1])
 
 
-def changeFont(*args):
+def changeFontColor(*args):
     clr = colorchooser.askcolor(title='select color')
     txt.config(fg=clr[1])
 
@@ -96,21 +98,21 @@ def cut(event=''):
     except:
         pass
 
-def changeFntFam(font,txt):
-    Desired_font = tkinter.font.Font(family=font)
+
+def changeFntFam(font):
+    Desired_font = tkinter.font.Font(family=font, size=font_size)
     print(font)
     print("txt===",txt)
     txt.config(font=Desired_font)
+    current_font = font
 
 
-def changeFntFam(font,txt):
-    Desired_font = tkinter.font.Font(family=font)
-    print(font)
-    print("txt===",txt)
-    txt.config(font=Desired_font)
+def changeFontSize(size):
+    txt.config(font=(current_font, size))
+
 
 tframe = Frame(root)
-tframe.pack()
+tframe.pack(fill=BOTH, expand=True)
 
 scroll = Scrollbar(tframe)
 scroll.pack(fill=Y, side=RIGHT)
@@ -159,12 +161,19 @@ font_labels = ["Adobe Garamond Pro",
 ]
 
 for font in font_labels:
-    fontFam.add_command(label=font, command=lambda: changeFntFam(font, txt))
+    fontFam.add_command(label=font, command=lambda font=font: changeFntFam(font))
+
+font_size_menu = Menu(mainm, tearoff=False)
+mainm.add_cascade(label='Font Size', menu=font_size_menu)
+
+font_sizes = [8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72]
+for s in font_sizes:
+    font_size_menu.add_command(label=s, command=lambda size=s: changeFontSize(size))
 
 format_menu = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='Format', menu=format_menu)
-format_menu.add_command(label='Change Background', command=changeBg)
-format_menu.add_command(label='Change Font', command=changeFont)
+format_menu.add_command(label='Change Background Color', command=changeBgColor)
+format_menu.add_command(label='Change Font Color', command=changeFontColor)
 
 root.bind('<Control-c>', cpy)
 root.bind('<Control-v>', paste)
@@ -175,11 +184,12 @@ root.bind('<Control-n>', new)
 
 #added 3 shortcuts
 root.bind('<Control-w>', search)
-root.bind('<Control-b>', changeBg)
-root.bind('<Control-f>', changeFont)
+root.bind('<Control-b>', changeBgColor)
+root.bind('<Control-f>', changeFontColor)
 
 #changed font family
-Desired_font = tkinter.font.Font( family = "Comic Sans MS", size = 12
+Desired_font = tkinter.font.Font( family = current_font, size = font_size
                                   )
 txt.configure(font= Desired_font)
+root.geometry("800x450")
 root.mainloop()
