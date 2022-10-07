@@ -24,6 +24,30 @@ def srch():
     except:
         txt.insert(INSERT, 'Check your internet connection or Enter proper word')
 
+def find(*args):
+    s = simpledialog.askstring('Find', 'What to find?')
+    root.title("Notepad - " + str(s))
+
+    if s is None:
+        return
+
+    index = '1.0'
+    txt.tag_remove('found', 1.0, END)
+
+    while True:
+        index = txt.search(s, index, nocase=1, stopindex=END)
+        if not index:
+            break
+        last_index = '% s+% dc' % (index, len(s))
+        txt.tag_add('found', index, last_index)
+        index = last_index
+
+    txt.tag_config('found', foreground='red')
+    if len(txt.tag_ranges('found')) // 2 == 0:
+        messagebox.showerror('Not found', 'The word \"'+s+'\" not found')
+
+
+
 
 def new(*args):
     txt.delete(1.0, END)
@@ -121,8 +145,8 @@ mainm.add_cascade(label='Edit', menu=edit_menu)
 edit_menu.add_command(label="Copy", command=cpy)
 edit_menu.add_command(label="Cut", command=cut)
 edit_menu.add_command(label="Paste", command=paste)
-mainm.add_command(label='Search', command=srch)
-
+mainm.add_command(label='Wiki Search', command=srch)
+mainm.add_command(label='Find', command=find)
 
 tframe = Frame(root)
 scroll = Scrollbar(tframe)
@@ -162,4 +186,5 @@ root.bind('<Control-x>', cut)
 root.bind('<Control-s>', save)
 root.bind('<Control-o>', strt)
 root.bind('<Control-n>', new)
+root.bind('<Control-f>', find)
 root.mainloop()
