@@ -6,4 +6,6 @@ A notepad application with online Wikipedia search developed using Tkinter Libra
 Tkinter <br>
 wikipedia <br>
 beautifulsoup (bs4)<br>
+Python3
+
  
