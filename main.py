@@ -68,7 +68,7 @@ def save(*args):
 
 
 def changeBg(*args):
-    clr = colorchooser.askcolor(title='select color')
+    clr = colorchooser.askcolor(title='select background color')
     txt.config(bg=clr[1])
 
 
