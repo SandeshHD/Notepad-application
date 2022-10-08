@@ -109,6 +109,27 @@ def changeFntFam(font,txt):
     print("txt===",txt)
     txt.config(font=Desired_font)
 
+def find():
+    s = simpledialog.askstring('Find', 'What to find?')
+    if s is None:
+        return
+
+    index = '1.0'
+    txt.tag_remove('found', 1.0, END)
+
+    while True:
+        index = txt.search(s, index, nocase=1, stopindex=END)
+        if not index:
+            break
+        last_index = '% s+% dc' % (index, len(s))
+        txt.tag_add('found', index, last_index)
+        index = last_index
+
+    txt.tag_config('found', foreground='red')
+    if len(txt.tag_ranges('found')) // 2 == 0:
+        messagebox.showerror('Not found', 'The word \"'+s+'\" not found')
+
+
 tframe = Frame(root)
 tframe.pack()
 
@@ -166,17 +187,20 @@ mainm.add_cascade(label='Format', menu=format_menu)
 format_menu.add_command(label='Change Background', command=changeBg)
 format_menu.add_command(label='Change Font', command=changeFont)
 
+mainm.add_command(label='Find', command=find)
+
 root.bind('<Control-c>', cpy)
 root.bind('<Control-v>', paste)
 root.bind('<Control-x>', cut)
 root.bind('<Control-s>', save)
 root.bind('<Control-o>', strt)
 root.bind('<Control-n>', new)
+root.bind('<Control-f>', find)
 
 #added 3 shortcuts
 root.bind('<Control-w>', search)
 root.bind('<Control-b>', changeBg)
-root.bind('<Control-f>', changeFont)
+root.bind('<Control-t>', changeFont)
 
 #changed font family
 Desired_font = tkinter.font.Font( family = "Comic Sans MS", size = 12
