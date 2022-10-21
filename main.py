@@ -3,11 +3,9 @@ from tkinter import filedialog, colorchooser, messagebox, simpledialog
 import wikipedia
 import tkinter.font
 
-
 fileloc = ['no_file']
 root = Tk()
 root.title("Notepad")
-
 
 def search(*args):
     s = simpledialog.askstring('Search', 'Enter your search')
@@ -109,6 +107,7 @@ def changeFntFam(font,txt):
     print("txt===",txt)
     txt.config(font=Desired_font)
 
+#     SEARCH BOX
 def find():
     s = simpledialog.askstring('Find', 'What to find?')
     if s is None:
@@ -202,6 +201,7 @@ root.bind('<Control-w>', search)
 root.bind('<Control-b>', changeBg)
 root.bind('<Control-t>', changeFont)
 
+# FONT CHANGE :-
 #changed font family
 Desired_font = tkinter.font.Font( family = "Comic Sans MS", size = 12
                                   )
