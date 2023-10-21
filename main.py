@@ -2,7 +2,8 @@ from tkinter import *
 from tkinter import filedialog, colorchooser, messagebox, simpledialog
 import wikipedia
 import tkinter.font
-
+import re
+import smtplib
 
 fileloc = ['no_file']
 root = Tk()
@@ -38,6 +39,42 @@ def strt(*args):
     fileloc[0] = res.name
     for c in res:
         txt.insert(INSERT, c)
+
+def email():
+    mailAddress = simpledialog.askstring('E-mail', 'Receipent E-mail ID')
+    if mailAddress is None:
+        return
+    
+    # validate email address
+    if not re.match("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",mailAddress):
+        messagebox.showerror("Error","invalid E-mail address")
+        return
+
+    
+    mailSubject = simpledialog.askstring('E-mail', 'Subject :')
+    # Default subject on empty user input
+    if mailSubject is None:
+        mailSubject="Note from Notepad"
+    content=txt.get(1.0, END)
+    sender_mail = 'sandysnotepad@gmail.com'    
+    receivers_mail = [mailAddress]    
+    message = message = """From: {0}
+To: {1}
+Subject: {2}
+{3}
+""".format(sender_mail,receivers_mail[0],mailSubject,content)
+    try:  
+        key = 'tnfs ksot jpos vxpp';    
+        smtpObj = smtplib.SMTP("smtp.gmail.com", 587, timeout=120)
+        smtpObj.starttls()
+        smtpObj.login(sender_mail,key)    
+        smtpObj.sendmail(sender_mail, receivers_mail, message)    
+        messagebox.showinfo("Success","E-mail sent successfully")  
+    except Exception as e:    
+        print(e)
+        messagebox.showerror("Error","Unable to send E-mail")
+
+    
 
 
 def exit():
@@ -146,8 +183,8 @@ root.config(menu=mainm)
 file = Menu(mainm, tearoff=False)
 mainm.add_cascade(label='File', menu=file)
 
-file_menu_labels = ["New", "Open", "Save", "Save as", "Exit"]
-file_menu_commands = [new, strt, save, saveas, exit]
+file_menu_labels = ["New", "Open", "Save", "Save as", "E-mail", "Exit"]
+file_menu_commands = [new, strt, save, saveas, email, exit]
 
 for item in zip(file_menu_labels, file_menu_commands):
     file.add_command(label=item[0], command=item[1])
